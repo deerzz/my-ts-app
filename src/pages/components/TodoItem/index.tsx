@@ -1,16 +1,13 @@
 import React from "react";
+import {Task} from "../../../type";
 
 export interface TodoItemProps {
-    task: {
-        name: string;
-        id: string;
-        completed: boolean
-    }
+    task: Task;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({task}) => {
     return <div>
         <input type={"checkbox"} id={task.id}/>
-        <label htmlFor={task.id}>{task.name}</label>
+        <label htmlFor={task.id}>{task.content}</label>
     </div>;
 }
