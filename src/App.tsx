@@ -37,7 +37,7 @@ function App() {
 
     return (
         <div className={"px-24"}>
-            <h1 className={"text-2xl"}>todos</h1>
+            <h1 className={"flex text-2xl justify-center mt-10"}>todos</h1>
             <InputField/>
             <div>
                 <div>
