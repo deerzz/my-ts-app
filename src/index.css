@@ -1,3 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .divider {
     margin: 8px;
+}
+
+.checkbox {
+    margin-right: 6px;
+}
+
+.completedTask {
+    color: darkgray;
+    text-decoration: line-through;
+}
+
+.selectAllBtn {
+    /*background-color: red;*/
+    width: 30px;
+    border-color: transparent;
 }

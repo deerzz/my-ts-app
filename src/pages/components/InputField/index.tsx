@@ -4,6 +4,7 @@ import {useSetRecoilState} from "recoil";
 import {tasksState} from "../../../atoms/tasksState";
 import {nanoid} from "nanoid";
 import {Task} from "../../../type";
+import {DownOutlined} from '@ant-design/icons';
 
 interface InputFieldProps {
 
@@ -11,8 +12,20 @@ interface InputFieldProps {
 
 export const InputField = (props: InputFieldProps) => {
     const [inputKey, setInputKey] = useState(0);
-
     const setTaskState = useSetRecoilState(tasksState);
+
+    const handleClick = () => {
+        setTaskState(tasks => {
+            const activeTask = tasks.find(item => item.completed === false)
+            return tasks.map(item => {
+                return {...item, completed: !!activeTask}
+            })
+        })
+    }
+
+    const selectAllBtn = (
+        <DownOutlined onClick={handleClick}/>
+    )
 
     const handlePressEnter = (value: any) => {
         setTaskState(tasks => {
@@ -24,7 +37,8 @@ export const InputField = (props: InputFieldProps) => {
 
     return (
         <div>
-            <Input key={inputKey} placeholder="What needs to be done" bordered={false} onPressEnter={handlePressEnter}/>
+            <Input key={inputKey} prefix={selectAllBtn} placeholder="What needs to be done" bordered={false}
+                   onPressEnter={handlePressEnter}/>
             <Divider className={'divider'}></Divider>
         </div>
     )

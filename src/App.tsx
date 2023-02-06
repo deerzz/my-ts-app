@@ -1,43 +1,52 @@
 import {InputField} from "./pages/components/InputField";
 import {TodoItem} from "./pages/components/TodoItem";
-import {useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {tasksState} from './atoms/tasksState'
-import {Tabs} from "antd";
-import {useMemo} from "react";
+import {useState} from "react";
+import {TabType} from "./type";
+import {TabFooter} from "./pages/components/TabFooter";
 
 function App() {
-    const tasks = useRecoilValue(tasksState)
+    const [tasks, setTasks] = useRecoilState(tasksState)
+    const [currentTab, setCurrentTab] = useState(TabType.All)
 
-    const taskTabItems = useMemo(() => ([
+    const taskTabItems = [
         {
-            key: 'All',
+            key: TabType.All,
             label: 'All',
-            children: tasks.map(task => (
-                <TodoItem key={task.id} task={task}/>
-            ))
         },
         {
-            key: 'Active',
+            key: TabType.Active,
             label: 'Active',
-            children: tasks.filter(item => !item.completed).map(task => (
-                <TodoItem key={task.id} task={task}/>
-            ))
         },
         {
-            key: 'Completed',
+            key: TabType.Completed,
             label: 'Completed',
-            children: tasks.filter(item => item.completed).map(task => (
-                <TodoItem key={task.id} task={task}/>
-            ))
         },
-    ]), [tasks])
+    ]
+
+    const activeTaskCount = tasks.filter(task => !task.completed).length;
+
+    const handleTabClick = (key: TabType) => {
+        setCurrentTab(key);
+    }
+
+    const handleClearCompleted = () => {
+        setTasks(tasks => tasks.filter(task => !task.completed))
+    }
 
     return (
-        <div>
-            <h1>todos</h1>
+        <div className={"px-24"}>
+            <h1 className={"text-2xl"}>todos</h1>
             <InputField/>
-            <Tabs items={taskTabItems}>
-            </Tabs>
+            <div>
+                <div>
+                    {tasks.filter(item => currentTab === TabType.All ? item : currentTab === TabType.Active ? !item.completed : item.completed).map(task => (
+                        <TodoItem key={task.id} task={task}/>))}
+                </div>
+                <TabFooter currentTab={currentTab} onTabChange={handleTabClick} tabs={taskTabItems}
+                           activeCount={activeTaskCount} onClearClick={handleClearCompleted}/>
+            </div>
         </div>
 
     )

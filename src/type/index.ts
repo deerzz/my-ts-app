@@ -3,3 +3,9 @@ export interface Task {
     content: string;
     completed: boolean;
 }
+
+export enum TabType {
+    All,
+    Active,
+    Completed,
+}
