@@ -13,7 +13,11 @@ export const TodoItem: React.FC<TodoItemProps> = ({task}) => {
     const setTaskState = useSetRecoilState(tasksState);
     const [showDeleteBtn, setShowDeleteBtn] = useState(false)
     const [editToggle, setEditToggle] = useState(false)
+    const [message, setMessage] = useState(task.content);
 
+    const handleChange = (event: any) => {
+        setMessage(event.target.value);
+    };
     const deleteBtn = (
         <CloseOutlined className={'float-right align-middle text-gray-400 mt-1'} id={task.id}
                        onClick={() => onDelete(task)}/>
@@ -54,24 +58,30 @@ export const TodoItem: React.FC<TodoItemProps> = ({task}) => {
         setEditToggle(false)
     }
 
+    const handleBlur = (value: any) => {
+        onEdit(value);
+        setEditToggle(false)
+    }
     const toggleInput = () => {
         setEditToggle(true)
     }
 
-    return (editToggle ? <Input autoFocus onPressEnter={onEdit}/> : <div onMouseEnter={() => {
-            setShowDeleteBtn(true);
-        }}
-                                                                         onMouseLeave={() => {
-                                                                             setShowDeleteBtn(false);
-                                                                         }}
-                                                                         onDoubleClick={toggleInput}
-        >
-            <Checkbox className={'checkbox'} onChange={onChange} id={task.id} checked={task.completed}/>
-            <label htmlFor={task.id}
-                   className={task.completed ? "line-through text-gray-400" : ''}
-            >{task.content}</label>
-            {showDeleteBtn && deleteBtn}
-            <Divider className={'divider'}></Divider>
-        </div>
+    return (editToggle ?
+            <Input autoFocus value={message} onPressEnter={onEdit} onBlur={handleBlur} onChange={handleChange}/> :
+            <div onMouseEnter={() => {
+                setShowDeleteBtn(true);
+            }}
+                 onMouseLeave={() => {
+                     setShowDeleteBtn(false);
+                 }}
+                 onDoubleClick={toggleInput}
+            >
+                <Checkbox className={'checkbox'} onChange={onChange} id={task.id} checked={task.completed}/>
+                <label htmlFor={task.id}
+                       className={task.completed ? "line-through text-gray-400" : ''}
+                >{task.content}</label>
+                {showDeleteBtn && deleteBtn}
+                <Divider className={'divider'}></Divider>
+            </div>
     );
 }

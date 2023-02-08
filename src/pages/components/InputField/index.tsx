@@ -37,7 +37,7 @@ export const InputField = (props: InputFieldProps) => {
 
     return (
         <div>
-            <Input key={inputKey} prefix={selectAllBtn} placeholder="What needs to be done" bordered={false}
+            <Input autoFocus key={inputKey} prefix={selectAllBtn} placeholder="What needs to be done" bordered={false}
                    onPressEnter={handlePressEnter}/>
             <Divider className={'divider'}></Divider>
         </div>
